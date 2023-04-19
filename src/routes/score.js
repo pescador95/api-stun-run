@@ -1,8 +1,9 @@
 module.exports = function (bd, app, cors) {
   app.get("/score/", cors(), async (req, res, next) => {
     try {
+      // let jsonParse = jsonParser();
       const { rows } = await bd.conn.query(
-        "SELECT * FROM SCORE ORDER BY SCORE DESC LIMIT 10"
+        "SELECT * FROM SCORE WHERE SCORE > 0 ORDER BY SCORE DESC LIMIT 10"
       );
       return res.status(200).send(rows);
     } catch (err) {
@@ -36,4 +37,16 @@ module.exports = function (bd, app, cors) {
       return res.status(500).send(err);
     }
   });
+
+  // async function jsonParser() {
+  //   const { rows } = await bd.conn.query(
+  //     "SELECT * FROM SCORE ORDER BY SCORE DESC LIMIT 10"
+  //   );
+  //   let json;
+  //   rows.forEach((e, i, a) => {
+  //     json += "{posicao" + toString(i) + ":" + toString(e) + ",";
+  //   });
+  //   console.log(json);
+  //   return jsonParser;
+  // }
 };
